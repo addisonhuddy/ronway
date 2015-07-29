@@ -1,2 +1,2 @@
-# ronway
-TDD approach to Conway's Game of Life in Ruby
+# Ronway
+Test-driven, Ruby implementation of Conway's game of life
