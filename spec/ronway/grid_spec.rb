@@ -35,27 +35,36 @@ describe Ronway::Grid do
   end
 
   context "finding cell neighbors" do
-
     it "finds the number of neighbors for a cell in the middle of the grid" do
-      expect(grid.get_neighbors_from_index(4).size).to eq 4
+      expect(grid.get_neighbors_from_index(4).size).to eq 8
     end
 
     it "find the number of neighbors for top row cells" do
-      expect(grid.get_neighbors_from_index(1).size).to eq 3
+      expect(grid.get_neighbors_from_index(1).size).to eq 5
     end
 
     it "find the number of neighbors for bottom row cells" do
-      expect(grid.get_neighbors_from_index(7).size).to eq 3
+      expect(grid.get_neighbors_from_index(7).size).to eq 5
     end
 
     it "find the number of neighbors for far left column" do
-      expect(grid.get_neighbors_from_index(0).size).to eq 2
+      expect(grid.get_neighbors_from_index(0).size).to eq 3
     end
 
     it "find the number of neighbors for the far right column" do
-      expect(grid.get_neighbors_from_index(2).size).to eq 2
+      expect(grid.get_neighbors_from_index(2).size).to eq 3
     end
-
   end
 
+  context "rule 1: a sole cell dies" do
+    it "kills any living sole cell" do
+      grid = Ronway::Grid.new(2, state: [:dead, :alive,
+                                     :dead, :dead])
+
+      grid.generate!
+
+      expect(grid.state).to eq [:dead, :dead,
+                           :dead, :dead]
+    end
+  end
 end

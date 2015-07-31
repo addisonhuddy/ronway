@@ -24,20 +24,47 @@ module Ronway
     def get_neighbors_from_index(index)
       cell_neighbords = []
 
-      #above
-      cell_neighbords << @storage[index + size] unless index < size
-      #below
-      cell_neighbords << @storage[index - size] unless last_row?(index)
-      #left
-      cell_neighbords << @storage[index - 1] unless index % size == 0
-      #right
-      unless (index + 1) % size == 0
-        cell_neighbords << @storage[index + 1]
+      #check left and right
+      cell_neighbords << @storage[index - 1] unless far_left?(index)
+      cell_neighbords << @storage[index + 1] unless far_right?(index)
+
+      #first row
+      unless top_row?(index)
+        cell_neighbords << @storage[above(index) - 1] unless far_left?(index)
+        cell_neighbords << @storage[above(index) + 1] unless far_right?(index)
+        cell_neighbords << @storage[above(index)]
       end
 
-      p cell_neighbords
+      #last row
+      unless last_row?(index)
+        cell_neighbords << @storage[below(index) - 1] unless far_left?(index)
+        cell_neighbords << @storage[below(index) + 1] unless far_right?(index)
+        cell_neighbords << @storage[below(index)]
+      end
 
-      #cell_neighbords.map { |i| @storage[i] }
+      cell_neighbords
+
+    end
+
+    def generate!
+      new_generation = []
+      @storage.each_with_index do |cell, index|
+        neighbors = get_neighbors_from_index(index)
+        living_neighbors_count = neighbors.select(&:alive?).count
+
+        if living_neighbors_count < 2
+          new_generation[index] = :dead
+        end
+      end
+
+      new_generation.each_with_index do |status, index|
+        if status == :alive
+          @storage[index].live!
+        else
+          @storage[index].die!
+        end
+      end
+
     end
 
     private
@@ -51,6 +78,26 @@ module Ronway
 
     def last_row?(index)
       index >= number_of_cells(size) - size
+    end
+
+    def top_row?(index)
+      index < size
+    end
+
+    def above(index)
+      index - size
+    end
+
+    def below(index)
+      index + size
+    end
+
+    def far_right?(index)
+      (index + 1) % size == 0
+    end
+
+    def far_left?(index)
+      index % size == 0
     end
 
   end
