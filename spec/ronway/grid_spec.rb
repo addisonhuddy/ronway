@@ -76,4 +76,41 @@ describe Ronway::Grid do
                                 :dead, :dead]
     end
   end
+
+  context "rule 2: any live cell with 2 or 3 live neighbors lives" do
+    it "cell lives with two neighbors" do
+      grid = Ronway::Grid.new(2, state: [:alive, :alive,
+                                         :alive, :alive])
+      grid.generate!
+
+      expect(grid.state).to eq [:alive, :alive,
+                                :alive, :alive]
+    end
+  end
+
+  context "rule 3: any cell with more than 3 live neighbors dies due to over-popultion" do
+    it "kills cells with too many neighbors" do
+      grid = Ronway::Grid.new(3, state: [:alive, :alive, :alive,
+                                         :alive, :alive, :alive,
+                                         :dead, :dead, :dead])
+      grid.generate!
+
+      expect(grid.state).to eq [:alive, :dead, :alive,
+                                :alive, :dead, :alive,
+                                :dead, :alive, :dead]
+    end
+  end
+
+  context "rule 4: dead cells with 3 live neighbors come to life" do
+    it "brings cells to life that have exactly 3 live neighbors" do
+      grid = Ronway::Grid.new(3, state: [:dead, :alive, :dead,
+                                         :alive,:dead, :alive,
+                                         :dead, :dead, :dead])
+      grid.generate!
+
+      expect(grid.state).to eq [:dead, :alive, :dead,
+                                :dead, :alive, :dead,
+                                :dead, :dead, :dead]
+    end
+  end
 end

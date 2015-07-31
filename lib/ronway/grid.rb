@@ -52,8 +52,14 @@ module Ronway
         neighbors = get_neighbors_from_index(index)
         living_neighbors_count = neighbors.select(&:alive?).count
 
-        if living_neighbors_count < 2
+        if living_neighbors_count < 2 #rule 1
           new_generation[index] = :dead
+        elsif cell.alive? && [2, 3].include?(living_neighbors_count) #rule 2
+          new_generation[index] = :alive
+        elsif cell.alive? && living_neighbors_count > 3 #rule 3
+          new_generation[index] = :dead
+        elsif cell.dead? && living_neighbors_count == 3 #rule 4
+          new_generation[index] = :alive
         end
       end
 
