@@ -3,7 +3,7 @@ module Ronway
     attr_reader :status
 
     def initialize(status = nil)
-      @status = status
+      @status = status || [:alive, :dead].sample #TODO make this more realistic
     end
 
     def alive?
