@@ -12,7 +12,7 @@ module Ronway
       loop do
         @grid.generate!
         puts @grid.to_s
-        sleep 0.25
+        sleep 0.1
         clear_screen
       end
     end
