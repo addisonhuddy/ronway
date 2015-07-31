@@ -21,5 +21,9 @@ module Ronway
     def die!
       @status = :dead
     end
+
+    def to_s
+      @status == :alive ? "o" : " "
+    end
   end
 end

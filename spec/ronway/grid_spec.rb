@@ -56,15 +56,24 @@ describe Ronway::Grid do
     end
   end
 
+  context "print the grid" do
+    it "can print the grid to the screen" do
+      grid = Ronway::Grid.new(2, state: [:dead, :alive,
+                                         :dead, :alive])
+      expected_grid = " o\n o\n"
+
+      expect(grid.to_s).to eq expected_grid
+    end
+  end
+
   context "rule 1: a sole cell dies" do
     it "kills any living sole cell" do
       grid = Ronway::Grid.new(2, state: [:dead, :alive,
-                                     :dead, :dead])
-
+                                         :dead, :dead])
       grid.generate!
 
       expect(grid.state).to eq [:dead, :dead,
-                           :dead, :dead]
+                                :dead, :dead]
     end
   end
 end

@@ -67,6 +67,16 @@ module Ronway
 
     end
 
+    def to_s
+      grid_string = ""
+      @storage.each_with_index do |cell, index|
+        grid_string += "#{cell}"
+        grid_string += "\n" if far_right?(index)
+      end
+
+      grid_string
+    end
+
     private
     def number_of_cells(size)
       size * size
